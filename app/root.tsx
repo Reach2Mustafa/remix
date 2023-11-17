@@ -1,6 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
-import stylesheet from "~/tailwind.css";
 import {
   Links,
   LiveReload,
@@ -8,13 +7,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "@remix-run/react";
-
+import styles from "./tailwind.css";
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: styles },
 ];
-
 export default function App() {
+  const navigation=useNavigation();
   return (
     <html lang="en">
       <head>
@@ -24,6 +24,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {navigation.state!='idle'?<div className=" h-[100vh] bg-black w-full text-green-700 " >loading</div>:''}
         <Outlet />
         <ScrollRestoration />
         <Scripts />
@@ -32,3 +33,10 @@ export default function App() {
     </html>
   );
 }
+
+
+
+
+
+
+
