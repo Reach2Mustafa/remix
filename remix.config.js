@@ -5,4 +5,13 @@ export default {
   // assetsBuildDirectory: "public/build",
   // publicPath: "/build/",
   // serverBuildPath: "build/index.js",
+
+  // Add your route configuration here
+  routes(defineRoutes) {
+    return defineRoutes((route) => {
+      route("Check","routes/check/check.js")
+    
+    });
+  },
+ 
 };
