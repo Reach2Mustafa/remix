@@ -9,7 +9,7 @@ export default {
   // Add your route configuration here
   routes(defineRoutes) {
     return defineRoutes((route) => {
-      route("","routes/check/check.js")
+      route(" ","routes/check/check.js")
     
     });
   },
