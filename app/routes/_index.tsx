@@ -14,7 +14,7 @@ export default function Index() {
   return (
     <>
       <h1 className="text-3xl text-r font-bold underline">
-        <Link to="Check">Hello world!</Link>
+        <Link to="/">Hello world!</Link>
       </h1>
      
     </>
