@@ -2,6 +2,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import Check from './check/check';
+import CountryDropdown from './phone'
 
 export const meta: MetaFunction = () => {
   return [
@@ -16,7 +17,9 @@ export default function Index() {
       <h1 className="text-3xl text-r font-bold underline">
         <Link to=" ">Hello world!</Link>
       </h1>
-     
+     <div className=" w-max mx-auto">
+<CountryDropdown/>
+     </div>
     </>
   );
 }
