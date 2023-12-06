@@ -17,7 +17,7 @@ export default function Index() {
       <h1 className="text-3xl text-r font-bold underline">
         <Link to=" ">Hello world!</Link>
       </h1>
-     <div className=" w-max mx-auto">
+     <div className=" w-max  px-96">
 <CountryDropdown/>
      </div>
     </>

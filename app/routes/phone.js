@@ -1,16 +1,16 @@
-
-import React, { useState } from 'react';
-import ReactCountryFlag from 'react-country-flag';
-
+import React, { useState } from "react";
+import ReactCountryFlag from "react-country-flag";
 
 const CountryDropdown = () => {
   const [showOptions, setShowOptions] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
-    name: 'India',
-    code: 'IN',
+    name: "India",
+    code: "IN",
     phone: 91,
   });
+  const [mobileNumber, setMobileNumber] = useState("")
+  const [height, setHeight] = useState(0);
 
   // Rest of the country data
   const countries = [
@@ -146,7 +146,11 @@ const CountryDropdown = () => {
     { name: "Lithuania", code: "LT", phone: 370 },
     { name: "Luxembourg", code: "LU", phone: 352 },
     { name: "Macao", code: "MO", phone: 853 },
-    { name: "Macedonia, the Former Yugoslav Republic of", code: "MK", phone: 389 },
+    {
+      name: "Macedonia, the Former Yugoslav Republic of",
+      code: "MK",
+      phone: 389,
+    },
     { name: "Madagascar", code: "MG", phone: 261 },
     { name: "Malawi", code: "MW", phone: 265 },
     { name: "Malaysia", code: "MY", phone: 60 },
@@ -223,7 +227,11 @@ const CountryDropdown = () => {
     { name: "Solomon Islands", code: "SB", phone: 677 },
     { name: "Somalia", code: "SO", phone: 252 },
     { name: "South Africa", code: "ZA", phone: 27 },
-    { name: "South Georgia and the South Sandwich Islands", code: "GS", phone: 500 },
+    {
+      name: "South Georgia and the South Sandwich Islands",
+      code: "GS",
+      phone: 500,
+    },
     { name: "South Sudan", code: "SS", phone: 211 },
     { name: "Spain", code: "ES", phone: 34 },
     { name: "Sri Lanka", code: "LK", phone: 94 },
@@ -265,11 +273,12 @@ const CountryDropdown = () => {
     { name: "Western Sahara", code: "EH", phone: 212 },
     { name: "Yemen", code: "YE", phone: 967 },
     { name: "Zambia", code: "ZM", phone: 260 },
-    { name: "Zimbabwe", code: "ZW", phone: 263 }
+    { name: "Zimbabwe", code: "ZW", phone: 263 },
   ];
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
+    setHeight(showOptions ? 0 : 300);
   };
 
   const handleSearch = (e) => {
@@ -279,41 +288,110 @@ const CountryDropdown = () => {
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     setShowOptions(false);
+    setHeight(0);
   };
 
-  const filteredCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    country.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    country.phone.toString().includes(searchTerm)
+  const filteredCountries = countries.filter(
+    (country) =>
+      country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      country.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      country.phone.toString().includes(searchTerm)
   );
+  const handleMobileNumberChange = (e) => {
+    // Allow only numbers and limit to a maximum of 10 digits
+    const inputNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setMobileNumber(inputNumber);
+  };
 
+  const handleSendOTP = () => {
+    // Validate mobile number before sending OTP
+    if (mobileNumber.length === 10) {
+      // Add your logic to send OTP here
+      console.log("Sending OTP to", `+${selectedCountry.phone} ${mobileNumber}`);
+      // Show pop-up
+      setShowPopup(true);
+    } else {
+      // Show error or alert for invalid mobile number
+      console.error("Invalid mobile number. Please enter a 10-digit number.");
+    }
+  };
   return (
-    <div className="country-list">
-      <div className="country-code" onClick={toggleOptions}>
-        <ReactCountryFlag countryCode={selectedCountry.code} svg style={{ marginRight: '8px' }} />
-        {`${selectedCountry.code} - ${selectedCountry.phone}`}
-      </div>
-      {showOptions && (
-        <div className="country-options">
+    <div className="  text-[0.8rem]">
+    
+      <div className="country-list">
+        <div className="flex border-[1px] px-1 gap-3 py-1 bg-[#F9FAFB] w-max rounded-lg border-[#E5E7EB]">
+          <div className="flex gap-1 bg-[#EFEFEF] px-1.5 py-2 rounded-lg" onClick={toggleOptions}>
+            <div className="flex items-center">
+              <img
+                src={`https://flagcdn.com/48x36/${selectedCountry.code.toLowerCase()}.png`}
+                className="h-[1.5rem] inline-block w-[1.5rem] rounded-3xl object-cover"
+                alt=""
+              />
+            </div>
+            <div>
+              <div className="flex justify-center items-center w-full h-max leading-0">
+               {` +${selectedCountry.phone}`}
+              </div>
+            </div>
+          </div>
+          <div className=" flex items-center">
           <input
+            id="1"
+            className="w-[14rem] px-1  bg-transparent"
+            placeholder="Enter your mobile number"
             type="text"
-            placeholder="Search..."
+            value={mobileNumber}
+            onChange={handleMobileNumberChange} // Call the new handler for mobile number change
+          />
+          </div>
+        </div>
+      </div>
+     
+      <div
+        className="country-options transition-all duration-1000 ease-in-out overflow-scroll"
+        style={{ height: `${height}px` }}
+      >
+
+          <input
+            className="border-[#E5E7EB]  w-[90%] bg-[#E5E7EB]  rounded-3xl   pl-2 py-2 my-2 border-[1px]"
+            type="text"
+            placeholder="Search country"
             value={searchTerm}
             onChange={handleSearch}
           />
-          <ul>
+          <div className="max-h-[16rem]  overflow-scroll">
             {filteredCountries.map((country) => (
-              <li key={country.code} onClick={() => handleCountrySelect(country)}>
-                <ReactCountryFlag countryCode={country.code} svg style={{ marginRight: '8px' }} />
-                {country.code} - {country.phone} - {country.name}
-              </li>
+              <div
+              className="  "
+                key={country.code}
+                onClick={() => handleCountrySelect(country)}
+              >
+                <div className="flex gap-3 py-3">
+                  <div className="flex justify-center items-center col-start-1 row-span-2">
+                    {" "}
+                    <img
+                      src={`https://flagcdn.com/48x36/${country.code.toLowerCase()}.png`}
+                      className="h-[2rem] inline-block w-[2rem] rounded-3xl object-cover"
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center ">
+                      {" "}
+                      +{country.phone}
+                    </div>
+                    <div className="">{country.name}</div>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
+
         </div>
-      )}
-    </div>
-  );
+
+      <div className=" w-full text-center bg-[#8041FF] text-white rounded-lg  py-3 my-2" onClick={handleSendOTP}>Send OTP</div>
+    </div>   );
+    
 };
 
 export default CountryDropdown;
-
